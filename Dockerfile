@@ -2,19 +2,23 @@ FROM alpine:3.6
 
 ENV PERL_MM_USE_DEFAULT 1
 
+ENV FOSWIKI_LATEST_URL https://github.com/foswiki/distro/releases/download/FoswikiRelease02x01x06/Foswiki-2.1.6.zip
+
+ENV FOSWIKI_LATEST Foswiki-2.1.6
+
 RUN apk add --update && \
     apk add nginx wget unzip make zip perl perl-cgi perl-fcgi perl-cgi-session perl-error perl-json perl-file-copy-recursive
 
 RUN perl -MCPAN -e 'install Crypt::PasswdMD5'
 
-RUN wget --no-check-certificate https://ncu.dl.sourceforge.net/project/foswiki/foswiki/2.1.4/Foswiki-2.1.4.zip
+RUN wget --no-check-certificate ${FOSWIKI_LATEST_URL} 
 
 RUN mkdir -p /var/www && \
-    mv Foswiki-2.1.4.zip /var/www && \
+    mv ${FOSWIKI_LATEST}.zip /var/www && \
     cd /var/www && \
-    unzip Foswiki-2.1.4.zip -d /var/www/ && \
-    mv Foswiki-2.1.4 foswiki && \
-    rm -rf Foswiki-2.1.4.zip && \
+    unzip ${FOSWIKI_LATEST}.zip -d /var/www/ && \
+    rm -rf ${FOSWIKI_LATEST}.zip && \
+    mv ${FOSWIKI_LATEST} foswiki && \
     cd foswiki && \
     sh tools/fix_file_permissions.sh && \
     mkdir -p /run/nginx && \
