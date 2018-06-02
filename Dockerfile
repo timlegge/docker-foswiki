@@ -1,4 +1,4 @@
-FROM alpine:3.6
+FROM alpine:3.7
 
 ENV PERL_MM_USE_DEFAULT 1
 
