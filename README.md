@@ -6,19 +6,20 @@ And I minized the size of docker with alpinelinux, the total size for this image
 
 ## How to use
 ```bash
-docker run -idt -p 80:80 michael34435/docker-foswiki
+docker run -idt -p 80:80 timlgge/docker-foswiki
 ```
 ### Running with persist storage
 
 ```bash
-sudo docker run --rm --name docker-foswiki -idt -p 80:80 -v foswiki_www:/var/www/foswiki:z timlegge/docker-foswiki
+docker run --rm --name docker-foswiki -idt -p 80:80 -v foswiki_www:/var/www/foswiki:z timlegge/docker-foswiki
 ```
 
+  * The assumption avove is that the user running the command is in the docker group otherwise sudo is required
   * The -rm removes the container after it stops running (useful for testing)
-  * The -v says to create a docker volume named foswiki_www and mount it to /var/www/foswiki in the running containe
+  * The -v says to create a docker volume on the host system named foswiki_www and mount it to /var/www/foswiki in the running container
   * The :z after the volume is necessary with selinux on RedHat to set the permissions correctly
 
-The volume is located at /var/lib/docker/volumes/foswili_www and will keek any change you make when configuring the container
+The volume is located on the host at /var/lib/docker/volumes/foswili_www and will keep any change you make when configuring the container
 
 ## How to Build
 You can build the docker image yourself from the git clone.  Dimply do the following in the git directory:
