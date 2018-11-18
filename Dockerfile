@@ -13,6 +13,9 @@ RUN apk add --update && \
     apk add perl-archive-zip perl-time-modules mailcap && \
     apk add perl-json-xs --update-cache --repository http://dl-3.alpinelinux.org/alpine/edge/testing/ --allow-untrusted && \
     apk add gcc perl-dev musl-dev db-dev imagemagick6-dev && \
+    apk add perl-authen-sasl && \
+    apk add perl-db_file && \
+    apk add perl-net-ldap  && \
     perl -MCPAN -e 'install Crypt::PasswdMD5, BerkeleyDB, Spreadsheet::XLSX ,XML::Easy, Time::ParseDate, Types::Standard, Algorithm::Diff::XS' && \
     wget http://www.imagemagick.org/download/perl/PerlMagick-6.89.tar.gz && \
     tar xvfz PerlMagick-6.89.tar.gz && \
@@ -25,6 +28,7 @@ RUN apk add --update && \
     apk del gcc perl-dev musl-dev db-dev imagemagick6-dev && \
     cd ~/ && \
     rm -fr .cpan
+
 
 RUN wget ${FOSWIKI_LATEST_URL}
 
