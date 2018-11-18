@@ -6,7 +6,13 @@ And I minized the size of docker with alpinelinux, the total size for this image
 
 ## How to use
 ```bash
+docker run -idt -p 80:80 michael34435/docker-foswiki
+```
+or
+
+```bash
 docker run -idt -p 80:80 timlegge/docker-foswiki
+
 ```
 ### Running with persist storage
 
@@ -14,7 +20,7 @@ docker run -idt -p 80:80 timlegge/docker-foswiki
 docker run --rm --name docker-foswiki -idt -p 80:80 -v foswiki_www:/var/www/foswiki:z timlegge/docker-foswiki
 ```
 
-  * The assumption avove is that the user running the command is in the docker group otherwise sudo is required
+  * The assumption above is that the user running the command is in the docker group otherwise sudo is required
   * The -rm removes the container after it stops running (useful for testing)
   * The -v says to create a docker volume on the host system named foswiki_www and mount it to /var/www/foswiki in the running container
   * The :z after the volume is necessary with selinux on RedHat to set the permissions correctly
@@ -52,7 +58,7 @@ sudo docker rm docker-foswiki
 ```bash
 sudo docker login
 sudo docker tag docker-foswiki $DOCKER_ID_USER/docker-foswiki
-sudo docker push timlegge/docker-foswiki
+sudo docker push  $DOCKER_ID_USER/docker-foswiki
 ``` 
 
 ## License
