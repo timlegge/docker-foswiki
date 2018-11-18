@@ -6,7 +6,7 @@ And I minized the size of docker with alpinelinux, the total size for this image
 
 ## How to use
 ```bash
-docker run -idt -p 80:80 timlgge/docker-foswiki
+docker run -idt -p 80:80 timlegge/docker-foswiki
 ```
 ### Running with persist storage
 
