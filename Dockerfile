@@ -12,10 +12,7 @@ RUN apk add --update && \
     apk add perl-cache-cache  perl-file-which perl-module-pluggable perl-moo perl-json perl-dbi perl-dbd-sqlite && \
     apk add perl-archive-zip perl-time-modules mailcap && \
     apk add perl-json-xs --update-cache --repository http://dl-3.alpinelinux.org/alpine/edge/testing/ --allow-untrusted && \
-    apk add gcc perl-dev musl-dev db-dev imagemagick6-dev && \
-    apk add perl-authen-sasl && \
-    apk add perl-db_file && \
-    apk add perl-net-ldap  && \
+    apk add gcc perl-dev musl-dev db-dev imagemagick6-dev perl-authen-sasl perl-db_file perl-net-ldap  && \
     perl -MCPAN -e 'install Crypt::PasswdMD5, BerkeleyDB, Spreadsheet::XLSX ,XML::Easy, Time::ParseDate, Types::Standard, Algorithm::Diff::XS' && \
     wget http://www.imagemagick.org/download/perl/PerlMagick-6.89.tar.gz && \
     tar xvfz PerlMagick-6.89.tar.gz && \
@@ -42,7 +39,6 @@ RUN mkdir -p /var/www && \
     sh tools/fix_file_permissions.sh && \
     mkdir -p /run/nginx && \
     mkdir -p /etc/nginx/conf.d
-
 
 COPY nginx.default.conf /etc/nginx/conf.d/default.conf
 COPY docker-entrypoint.sh docker-entrypoint.sh
