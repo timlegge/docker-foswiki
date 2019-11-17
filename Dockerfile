@@ -68,11 +68,17 @@ RUN cd /var/www/foswiki && \
     tools/configure -save -set {DefaultUrlHost}='http://localhost' && \
     tools/configure -save -set {SafeEnvPath}='/bin:/usr/bin' && \
     tools/extension_installer ActionTrackerPlugin -r -enable install && \
+    tools/extension_installer AutoTemplatePlugin -r -enable install && \
+    tools/extension_installer BreadCrumbsPlugin -r -enable install && \
     tools/extension_installer NatSkin -r -enable install && \
     tools/extension_installer JQPhotoSwipeContrib -r -enable install && \
     tools/extension_installer ClassificationPlugin -r -enable install && \
+    tools/extension_installer DBCachePlugin -r -enable install && \
     tools/extension_installer DiffPlugin -r -enable install && \
     tools/extension_installer DocumentViewerPlugin -r -enable install && \
+    tools/extension_installer EditChapterPlugin -r -enable install && \
+    tools/extension_installer FlexFormPlugin -r -enable install && \
+    tools/extension_installer FlexWebListPlugin -r -enable install && \
     tools/extension_installer FilterPlugin -r -enable install && \
     tools/extension_installer GluePlugin -r -enable install && \
     tools/extension_installer GraphvizPlugin -r -enable install && \
@@ -95,6 +101,7 @@ RUN cd /var/www/foswiki && \
     tools/extension_installer MimeIconPlugin -r -enable install && \
     tools/extension_installer MoreFormfieldsPlugin -r -enable install && \
     tools/extension_installer MultiLingualPlugin -r -enable install && \
+    tools/extension_installer PubLinkFixupPlugin -r -enable install && \
     tools/extension_installer NewUserPlugin -r -enable install && \
     tools/extension_installer RedDotPlugin -r -enable install && \
     tools/extension_installer RenderPlugin -r -enable install && \
@@ -102,6 +109,7 @@ RUN cd /var/www/foswiki && \
     tools/extension_installer TagCloudPlugin -r -enable install && \
     tools/extension_installer TopicInteractionPlugin -r -enable install && \
     tools/extension_installer TopicTitlePlugin -r -enable install && \
+    tools/extension_installer WebLinkPlugin -r -enable install && \
     tools/extension_installer WorkflowPlugin -r -enable install && \
     rm -fr /var/www/foswiki/working/configure/download/* && \
     rm -fr /var/www/foswiki/working/configure/backup/*

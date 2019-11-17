@@ -23,16 +23,29 @@ services:
       - solr_configsets:/opt/solr/server/solr/configsets:z
       - solr_foswiki:/opt/solr/server/solr/solr_foswiki:z
       - foswiki_www:/var/www/foswiki:z
-    command: sh -c "cd /var/www/foswiki; chown -R 8983:8983 solr; sed -i '/SolrPlugin..Url/s/localhost/solr/' lib/LocalSite.cfg; cd /opt/solr/server/solr/configsets ; [ -L foswiki_configs ] && rm foswiki_configs ; ln -s /var/www/foswiki/solr/configsets/foswiki_configs/ . ; cd /opt/solr/server/solr/solr_foswiki ; [ -L core.properties ] && rm core.properties ; ln -s /var/www/foswiki/solr/cores/foswiki/core.properties ; chown -R 8983:8983 /opt/solr/server/solr ."
+    # Setup Solr 
+    # Set default skin to Nat, if no skin specified otherwise
+    command: sh -c "
+      chown -R 8983:8983 /opt/solr/server/solr ;
+      chown -R 8983:8983 /var/www/foswiki/solr ;
+
+      cd /opt/solr/server/solr/configsets ;
+      [ -L foswiki_configs ] && rm foswiki_configs ;
+      ln -s /var/www/foswiki/solr/configsets/foswiki_configs/ . ;
+
+      cd /opt/solr/server/solr/solr_foswiki ;
+      [ -L core.properties ] && rm core.properties ;
+      ln -s /var/www/foswiki/solr/cores/foswiki/core.properties ;
+
+      sed -i '/SolrPlugin..Url/s/localhost/solr/' /var/www/foswiki/lib/LocalSite.cfg ;
+
+      cd /var/www/foswiki/; ! [ `grep -l \"SKIN\" data/Main/SitePreferences.txt` ] && sed -i '/---++ Appearance/a\ \ \ * Set SKIN = nat' data/Main/SitePreferences.txt ; "
 
   solr:
     image: solr:5
     container_name: solr
     depends_on:
       - setup
-    # only usefull to have access to solr console, will be delete in production
-    ports:
-      - 8983:8983
     volumes:
       - solr_logs:/opt/solr/server/logs:z
       - solr_configsets:/opt/solr/server/solr/configsets:z
