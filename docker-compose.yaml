@@ -2,13 +2,13 @@ version: '3'
 
 services:
   foswiki:
-    image: timlegge/docker-foswiki
+    image: timlegge/docker-foswiki-solr8
     ports:
       - "${FOSWIKI_PORT:-8765}:80"
     volumes:
       - solr_logs:/opt/solr/server/logs:z
-      - solr_configsets:/opt/solr/server/solr/configsets:z
-      - solr_foswiki:/opt/solr/server/solr/solr_foswiki:z
+      - solr_configsets:/var/solr/data/configsets:z
+      - solr_cores:/var/solr/data/cores:z
       - foswiki_www:/var/www/foswiki:z
 
   setup:
@@ -16,42 +16,43 @@ services:
     depends_on:
       - foswiki
     volumes:
-      - solr_configsets:/opt/solr/server/solr/configsets:z
-      - solr_foswiki:/opt/solr/server/solr/solr_foswiki:z
+      - solr_configsets:/var/solr/data/configsets:z
+      - solr_cores:/var/solr/data/cores:z
       - foswiki_www:/var/www/foswiki:z
+
     # Setup Solr, set default skin to Nat if no skin specified otherwise
     command: sh -c "
-      chown -R 8983:8983 /opt/solr/server/solr ;
-      chown -R 8983:8983 /var/www/foswiki/solr ;
+      chown -R 8983:8983 /var/www/foswiki/solr8 ;
+      chown -R 8983:8983 /var/solr/data
 
-      cd /opt/solr/server/solr/configsets ;
+      cd /var/solr/data/configsets ; 
       [ -L foswiki_configs ] && rm foswiki_configs ;
-      ln -s /var/www/foswiki/solr/configsets/foswiki_configs/ . ;
+      ln -s /var/www/foswiki/solr8/configsets/foswiki_configs . ;
 
-      cd /opt/solr/server/solr/solr_foswiki ;
-      [ -L core.properties ] && rm core.properties ;
-      ln -s /var/www/foswiki/solr/cores/foswiki/core.properties ;
+      cd /var/solr/data/cores ; 
+      [ -L foswiki ] && rm foswiki ; 
+      ln -s /var/www/foswiki/solr8/cores/foswiki . ; 
 
       sed -i '/SolrPlugin..Url/s/localhost/solr/' /var/www/foswiki/lib/LocalSite.cfg ;
 
       cd /var/www/foswiki/; ! [ `grep -l \"SKIN\" data/Main/SitePreferences.txt` ] && sed -i '/---++ Appearance/a\ \ \ * Set SKIN = nat' data/Main/SitePreferences.txt ; "
 
   solr:
-    image: solr:5
+    image: solr:8
     depends_on:
       - setup
     volumes:
       - solr_logs:/opt/solr/server/logs:z
-      - solr_configsets:/opt/solr/server/solr/configsets:z
-      - solr_foswiki:/opt/solr/server/solr/solr_foswiki:z
+      - solr_configsets:/var/solr/data/configsets:z
+      - solr_cores:/var/solr/data/cores:z
       - foswiki_www:/var/www/foswiki:z
-    environment:
-      - GC_LOG_OPTS=''
-      - SOLR_LOG_LEVEL='WARN'
+#    environment:
+#      - GC_LOG_OPTS=''
+#      - SOLR_LOG_LEVEL='WARN'
 
 volumes:
   foswiki_www:
   solr_logs:
   solr_configsets:
-  solr_foswiki:
+  solr_cores:
 

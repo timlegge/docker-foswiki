@@ -124,6 +124,8 @@ RUN git clone https://github.com/timlegge/SamlLoginContrib.git && \
     apk del --purge make musl-dev db-dev expat-dev openssl-dev \
         imagemagick6-dev krb5-dev libxml2-dev gcc git perl-dev
 
+COPY solr8 /var/www/foswiki/solr8
+
 RUN mkdir -p /run/nginx && \
     mkdir -p /etc/nginx/conf.d
 
