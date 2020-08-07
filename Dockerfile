@@ -44,10 +44,10 @@ RUN rm -rf /var/cache/apk/* && \
         perl-xml-tidy perl-xml-writer perl-xml-xpath perl-yaml perl-yaml-tiny \
         perl-file-mmagic perl-net-saml2 imagemagick-perlmagick graphviz \
         odt2txt antiword lynx poppler-utils perl-email-address-xs \
-        perl-crypt-openssl-verify perl-xml-sig iwatch  --update-cache && \
-    rm -fr /var/cache/apk/APKINDEX.*
+        perl-crypt-openssl-verify perl-xml-sig iwatch  --update-cache
 
-RUN touch /root/.bashrc && \
+RUN rm -fr /var/cache/apk/APKINDEX.* && \
+    touch /root/.bashrc && \
     wget ${FOSWIKI_LATEST_URL} && \
     echo "${FOSWIKI_LATEST_MD5}  ${FOSWIKI_LATEST}.tgz" > ${FOSWIKI_LATEST}.tgz.md5 && \
     md5sum -cs ${FOSWIKI_LATEST}.tgz.md5 && \
