@@ -45,8 +45,9 @@ RUN rm -rf /var/cache/apk/* && \
         perl-file-mmagic perl-net-saml2 imagemagick-perlmagick graphviz \
         odt2txt antiword lynx poppler-utils perl-email-address-xs \
         perl-crypt-openssl-verify perl-xml-sig iwatch  --update-cache && \
-        rm -fr /var/cache/apk/APKINDEX.* && \
-    touch /root/.bashrc && \
+        rm -fr /var/cache/apk/APKINDEX.*
+
+RUN touch /root/.bashrc && \
     wget ${FOSWIKI_LATEST_URL} && \
     echo "${FOSWIKI_LATEST_MD5}  ${FOSWIKI_LATEST}.tgz" > ${FOSWIKI_LATEST}.tgz.md5 && \
     md5sum -cs ${FOSWIKI_LATEST}.tgz.md5 && \
@@ -57,8 +58,9 @@ RUN rm -rf /var/cache/apk/* && \
     rm -rf ${FOSWIKI_LATEST}.tgz && \
     mv ${FOSWIKI_LATEST} foswiki && \
     cd foswiki && \
-    sh tools/fix_file_permissions.sh && \
-    cd /var/www/foswiki && \
+    sh tools/fix_file_permissions.sh
+
+RUN cd /var/www/foswiki && \
     tools/configure -save -noprompt && \
     tools/configure -save -set {DefaultUrlHost}='http://localhost' && \
     tools/configure -save -set {ScriptUrlPath}='/bin' && \
