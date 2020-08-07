@@ -45,7 +45,7 @@ RUN rm -rf /var/cache/apk/* && \
         perl-file-mmagic perl-net-saml2 imagemagick-perlmagick graphviz \
         odt2txt antiword lynx poppler-utils perl-email-address-xs \
         perl-crypt-openssl-verify perl-xml-sig iwatch  --update-cache && \
-        rm -fr /var/cache/apk/APKINDEX.*
+    rm -fr /var/cache/apk/APKINDEX.*
 
 RUN touch /root/.bashrc && \
     wget ${FOSWIKI_LATEST_URL} && \
