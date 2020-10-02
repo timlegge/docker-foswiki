@@ -1,9 +1,13 @@
+Version 1.19
+
+dbf4eba Add perl-webservice-slack-webapi and update CHANGES
+
 Version 1.18
 
+752c19a Move XSend Settings
+00a9ab2 update CHANGES
 db58507 Fix missing XSendFileContrib settings
 e0164df Raised nginx upload size to 50M + reduced docker image layers number (so image size 560M -> 390M !)
-0e2fbba perl-db replaces perl-berkeleydb
-
     This version requires the following changes in existing docker-foswiki installations
         1. Installation of XSendFileContrib
         2. Set $Foswiki::cfg{XSendFileContrib}{Header} = 'X-Accel-Redirect';
@@ -11,6 +15,9 @@ e0164df Raised nginx upload size to 50M + reduced docker image layers number (so
 
 Version 1.17
 
+0e2fbba perl-db replaces perl-berkeleydb
+8297b83 update CHANGES
+194b884 Update packages and add perl-xml-sig
 9689869 Merge pull request #32 from timlegge/v0.16
 c87a56c Update CHANGES
 70be08f Merge pull request #31 from timlegge/iwatch
