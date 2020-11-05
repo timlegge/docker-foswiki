@@ -43,7 +43,7 @@ RUN rm -rf /var/cache/apk/* && \
         perl-xml-canonicalizexml perl-xml-easy perl-xml-generator perl-xml-parser \
         perl-xml-tidy perl-xml-writer perl-xml-xpath perl-yaml perl-yaml-tiny \
         perl-file-mmagic perl-net-saml2 imagemagick-perlmagick graphviz \
-        odt2txt antiword lynx poppler-utils perl-email-address-xs \
+        odt2txt antiword lynx poppler-utils perl-email-address-xs perl-chi \
         perl-crypt-openssl-verify perl-xml-sig iwatch perl-webservice-slack-webapi  --update-cache && \
         # perl-libapreq2 -- Apache2::Request - Here for completeness but we use nginx \
     rm -fr /var/cache/apk/APKINDEX.* && \
