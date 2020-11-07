@@ -1,3 +1,9 @@
+Version 1.20
+
+398b4ac Add perl-chi
+f0e97cc Merge pull request #35 from timlegge/rel_v1.19
+369dad2 Release v1.19
+
 Version 1.19
 
 dbf4eba Add perl-webservice-slack-webapi and update CHANGES

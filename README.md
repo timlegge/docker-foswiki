@@ -347,6 +347,7 @@ community | Algorithm-Diff | perl-algorithm-diff
 community | Algorithm-Diff-XS | perl-algorithm-diff-xs
 community | AuthCAS | perl-authcas
 community | BerkeleyDB | perl-db
+community | CHI | perl-chi
 community | Crypt-PasswdMD5 | perl-crypt-passwdmd5
 community | Crypt-SMIME | perl-crypt-smime
 community | Convert-PEM | perl-convert-pem
