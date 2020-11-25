@@ -15,6 +15,7 @@ RUN rm -rf /var/cache/apk/* && \
     apk upgrade && \
     apk add --update && \
     apk add ca-certificates imagemagick mailcap musl nginx openssl tzdata bash \
+        db make gcc db-dev musl-dev perl-dev \
         grep unzip wget zip perl perl-algorithm-diff perl-algorithm-diff-xs \
         perl-apache-logformat-compiler perl-archive-zip perl-authen-sasl \
         perl-authcas perl-db perl-cache-cache perl-cgi perl-cgi-session \
@@ -24,7 +25,7 @@ RUN rm -rf /var/cache/apk/* && \
         perl-crypt-openssl-verifyx509 perl-crypt-openssl-x509 perl-crypt-passwdmd5 \
         perl-crypt-random perl-crypt-smime perl-crypt-x509 perl-dancer \
         perl-datetime perl-datetime-format-xsd perl-dbd-mysql perl-dbd-pg \
-        perl-dbd-sqlite perl-db_file perl-db_file-lock perl-dbi \
+        perl-dbd-sqlite perl-dbi \
         perl-devel-overloadinfo perl-digest-perl-md5 perl-digest-sha1 \
         perl-email-mime perl-encode perl-error perl-fcgi perl-fcgi-procmanager \
         perl-file-copy-recursive perl-file-remove perl-file-slurp perl-file-which \
@@ -47,6 +48,9 @@ RUN rm -rf /var/cache/apk/* && \
         perl-crypt-openssl-verify perl-xml-sig iwatch perl-webservice-slack-webapi  --update-cache && \
         # perl-libapreq2 -- Apache2::Request - Here for completeness but we use nginx \
     rm -fr /var/cache/apk/APKINDEX.* && \
+    perl -MCPAN -e 'install DB_File' && \
+    perl -MCPAN -e "CPAN::Shell->notest('install', 'DB_File::Lock')" && \
+    apk del make gcc musl-dev perl-dev db-dev && \
     touch /root/.bashrc && \
     wget ${FOSWIKI_LATEST_URL} && \
     echo "${FOSWIKI_LATEST_MD5}  ${FOSWIKI_LATEST}.tgz" > ${FOSWIKI_LATEST}.tgz.md5 && \
