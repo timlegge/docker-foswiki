@@ -1,4 +1,4 @@
-FROM alpine:edge
+FROM alpine:3.12
 
 ENV PERL_MM_USE_DEFAULT 1
 
@@ -10,24 +10,24 @@ ENV FOSWIKI_LATEST Foswiki-2.1.6
 
 RUN rm -rf /var/cache/apk/* && \
     rm -rf /tmp/* && \
-    sed -n 's/main/testing/p' /etc/apk/repositories >> /etc/apk/repositories && \
+#    sed -n 's/main/testing/p' /etc/apk/repositories >> /etc/apk/repositories && \
     apk update && \
     apk upgrade && \
     apk add --update && \
     apk add ca-certificates imagemagick mailcap musl nginx openssl tzdata bash \
-        db make gcc db-dev musl-dev perl-dev \
+        db make gcc db-dev musl-dev \
         grep unzip wget zip perl perl-algorithm-diff perl-algorithm-diff-xs \
         perl-apache-logformat-compiler perl-archive-zip perl-authen-sasl \
         perl-authcas perl-db perl-cache-cache perl-cgi perl-cgi-session \
         perl-class-accessor perl-convert-pem perl-crypt-eksblowfish \
         perl-crypt-jwt perl-crypt-openssl-bignum perl-crypt-openssl-dsa \
         perl-crypt-openssl-random perl-crypt-openssl-rsa \
-        perl-crypt-openssl-verifyx509 perl-crypt-openssl-x509 perl-crypt-passwdmd5 \
+        perl-crypt-openssl-verify perl-crypt-openssl-x509 perl-crypt-passwdmd5 \
         perl-crypt-random perl-crypt-smime perl-crypt-x509 perl-dancer \
         perl-datetime perl-datetime-format-xsd perl-dbd-mysql perl-dbd-pg \
         perl-dbd-sqlite perl-dbi \
         perl-devel-overloadinfo perl-digest-perl-md5 perl-digest-sha1 \
-        perl-email-mime perl-encode perl-error perl-fcgi perl-fcgi-procmanager \
+        perl-email-mime perl-error perl-fcgi perl-fcgi-procmanager \
         perl-file-copy-recursive perl-file-remove perl-file-slurp perl-file-which \
         perl-filesys-notify-simple perl-file-which perl-gd perl-gssapi \
         perl-hash-merge-simple perl-hash-multivalue perl-html-tree \
@@ -39,16 +39,18 @@ RUN rm -rf /var/cache/apk/* && \
         perl-moosex-types-datetime perl-moosex-types-uri \
         perl-moox-types-mooselike perl-path-tiny perl-spreadsheet-parseexcel \
         perl-spreadsheet-xlsx perl-stream-buffered perl-sub-exporter-formethods \
-        perl-sereal perl-test-leaktrace perl-text-unidecode perl-text-soundex \
+        #perl-sereal perl-test-leaktrace perl-text-unidecode perl-text-soundex \
+        perl-test-leaktrace perl-text-unidecode perl-text-soundex \
         perl-time-parsedate perl-type-tiny perl-uri perl-www-mechanize \
         perl-xml-canonicalizexml perl-xml-easy perl-xml-generator perl-xml-parser \
         perl-xml-tidy perl-xml-writer perl-xml-xpath perl-yaml perl-yaml-tiny \
         perl-file-mmagic perl-net-saml2 imagemagick-perlmagick graphviz \
         odt2txt antiword lynx poppler-utils perl-email-address-xs perl-chi \
-        perl-crypt-openssl-verify perl-xml-sig iwatch perl-webservice-slack-webapi  --update-cache && \
+        #perl-xml-sig iwatch perl-webservice-slack-webapi perl-dev  --update-cache && \
+        iwatch perl-dev  --update-cache && \
         # perl-libapreq2 -- Apache2::Request - Here for completeness but we use nginx \
     rm -fr /var/cache/apk/APKINDEX.* && \
-    perl -MCPAN -e 'install DB_File' && \
+    perl -MCPAN -e 'install DB_File, Sereal, WebService::Slack::WebApi, XML::Sig' && \
     perl -MCPAN -e "CPAN::Shell->notest('install', 'DB_File::Lock')" && \
     apk del make gcc musl-dev perl-dev db-dev && \
     touch /root/.bashrc && \
