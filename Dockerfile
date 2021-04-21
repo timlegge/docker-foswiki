@@ -1,4 +1,4 @@
-FROM alpine:3.12
+FROM alpine:edge
 
 ENV PERL_MM_USE_DEFAULT 1
 
@@ -10,7 +10,7 @@ ENV FOSWIKI_LATEST Foswiki-2.1.6
 
 RUN rm -rf /var/cache/apk/* && \
     rm -rf /tmp/* && \
-#    sed -n 's/main/testing/p' /etc/apk/repositories >> /etc/apk/repositories && \
+    sed -n 's/main/testing/p' /etc/apk/repositories >> /etc/apk/repositories && \
     apk update && \
     apk upgrade && \
     apk add --update && \
@@ -40,17 +40,16 @@ RUN rm -rf /var/cache/apk/* && \
         perl-moox-types-mooselike perl-path-tiny perl-spreadsheet-parseexcel \
         perl-spreadsheet-xlsx perl-stream-buffered perl-sub-exporter-formethods \
         #perl-sereal perl-test-leaktrace perl-text-unidecode perl-text-soundex \
-        perl-test-leaktrace perl-text-unidecode perl-text-soundex \
+        perl-text-unidecode perl-text-soundex \
         perl-time-parsedate perl-type-tiny perl-uri perl-www-mechanize \
-        perl-xml-canonicalizexml perl-xml-easy perl-xml-generator perl-xml-parser \
+        perl-xml-easy perl-xml-generator perl-xml-parser \
         perl-xml-tidy perl-xml-writer perl-xml-xpath perl-yaml perl-yaml-tiny \
         perl-file-mmagic perl-net-saml2 imagemagick-perlmagick graphviz \
         odt2txt antiword lynx poppler-utils perl-email-address-xs perl-chi \
-        #perl-xml-sig iwatch perl-webservice-slack-webapi perl-dev  --update-cache && \
-        iwatch perl-dev  --update-cache && \
+        perl-xml-sig iwatch perl-http-anyua perl-webservice-slack-webapi perl-dev  --update-cache && \
         # perl-libapreq2 -- Apache2::Request - Here for completeness but we use nginx \
     rm -fr /var/cache/apk/APKINDEX.* && \
-    perl -MCPAN -e 'install DB_File, Sereal, WebService::Slack::WebApi, XML::Sig' && \
+    perl -MCPAN -e 'install DB_File' && \
     perl -MCPAN -e "CPAN::Shell->notest('install', 'DB_File::Lock')" && \
     apk del make gcc musl-dev perl-dev db-dev && \
     touch /root/.bashrc && \
