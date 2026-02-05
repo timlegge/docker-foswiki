@@ -1,0 +1,46 @@
+services:
+
+  foswiki:
+    image: timlegge/docker-foswiki:latest
+    restart: always
+    depends_on: 
+      - solr
+    networks:
+      - frontend
+      - backend
+    ports:
+      - "8765:80"
+      - "8443:443"
+    volumes:
+      - solr_logs:/opt/solr/server/logs:z
+      - solr_configsets:/opt/solr/server/solr/configsets:z
+      - solr_foswiki:/opt/solr/server/solr/solr_foswiki:z
+      - foswiki_www:/var/www/foswiki:z
+      - ./https/nginx.default.conf:/etc/nginx/http.d/default.conf:z
+      - ./https/docker-foswiki.crt:/etc/nginx/docker-foswiki.crt:z
+      - ./https/docker-foswiki.key:/etc/nginx/docker-foswiki.key:z
+
+  solr:
+    image: solr:5
+    restart: always
+    networks:
+      - backend
+    volumes:
+      - solr_logs:/opt/solr/server/logs:z
+      - solr_configsets:/opt/solr/server/solr/configsets:z
+      - solr_foswiki:/opt/solr/server/solr/solr_foswiki:z
+      - foswiki_www:/var/www/foswiki:z
+    environment:
+      - GC_LOG_OPTS=''
+      - SOLR_LOG_LEVEL='WARN'
+
+volumes:
+  foswiki_www:
+  solr_configsets:
+  solr_foswiki:
+  solr_logs:
+
+networks:
+  frontend:
+  backend:
+    internal: true
