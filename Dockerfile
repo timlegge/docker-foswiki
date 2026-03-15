@@ -2,11 +2,11 @@ FROM alpine:edge
 
 ENV PERL_MM_USE_DEFAULT 1
 
-ENV FOSWIKI_LATEST_URL https://github.com/foswiki/distro/releases/download/FoswikiRelease02x01x08/Foswiki-2.1.8.tgz
+ENV FOSWIKI_LATEST_URL https://foswiki.org/pub/Download/FoswikiRelease02x01x11/Foswiki-2.1.11.tgz
 
-ENV FOSWIKI_LATEST_SHA1 7b10773a9e54ce1580d3f98e7162d972fc2a761b
+ENV FOSWIKI_LATEST_SHA256 3a490eb460db4ca69d73dfe44c7984889552e5313eff60162760e80e66e5eba6
 
-ENV FOSWIKI_LATEST Foswiki-2.1.8
+ENV FOSWIKI_LATEST Foswiki-2.1.11
 
 RUN rm -rf /var/cache/apk/* && \
     rm -rf /tmp/* && \
@@ -54,8 +54,8 @@ RUN rm -rf /var/cache/apk/* && \
     apk del make gcc musl-dev perl-dev db-dev && \
     touch /root/.bashrc && \
     wget ${FOSWIKI_LATEST_URL} && \
-    echo "${FOSWIKI_LATEST_SHA1}  ${FOSWIKI_LATEST}.tgz" > ${FOSWIKI_LATEST}.tgz.sha1 && \
-    sha1sum -cs ${FOSWIKI_LATEST}.tgz.sha1 && \
+    echo "${FOSWIKI_LATEST_SHA256}  ${FOSWIKI_LATEST}.tgz" > ${FOSWIKI_LATEST}.tgz.sha256 && \
+    sha256sum -cs ${FOSWIKI_LATEST}.tgz.sha256 && \
     mkdir -p /var/www && \
     mv ${FOSWIKI_LATEST}.tgz /var/www && \
     cd /var/www && \
