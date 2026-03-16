@@ -2,9 +2,11 @@ services:
 
   foswiki:
     image: timlegge/docker-foswiki:latest
+#    image: my-foswiki-image:latest
     restart: always
     depends_on: 
-      - solr
+      solr:
+         condition: service_healthy
     networks:
       - frontend
       - backend
