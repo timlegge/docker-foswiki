@@ -1,2 +1,9 @@
 *~
 *.swp
+certconfig/
+certlogs/
+certwork/
+CLAUDE.md
+.claude/
+https/
+
