@@ -25,7 +25,7 @@ RUN rm -rf /var/cache/apk/* && \
         perl-crypt-openssl-verify perl-crypt-openssl-x509 perl-crypt-passwdmd5 \
         perl-crypt-random perl-crypt-smime perl-crypt-x509 perl-dancer \
         perl-datetime perl-datetime-format-xsd perl-dbd-mysql perl-dbd-pg \
-        perl-dbd-sqlite perl-dbi \
+        perl-dbd-sqlite perl-dbi perl-crypt-sysrandom \
         perl-devel-overloadinfo perl-digest-perl-md5 perl-digest-sha1 \
         perl-email-mime perl-error perl-fcgi perl-fcgi-procmanager \
         perl-file-copy-recursive perl-file-remove perl-file-slurp perl-file-which \
