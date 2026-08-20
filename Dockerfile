@@ -66,7 +66,7 @@ RUN rm -rf /var/cache/apk/* && \
     sh tools/fix_file_permissions.sh && \
     cd /var/www/foswiki && \
     tools/configure -save -noprompt && \
-    tools/configure -save -set {DefaultUrlHost}='http://localhost' && \
+    tools/configure -save -set {DefaultUrlHost}='https://docker-foswiki.local' && \
     tools/configure -save -set {ScriptUrlPath}='/bin' && \
     tools/configure -save -set {ScriptUrlPaths}{view}='' && \
     tools/configure -save -set {PubUrlPath}='/pub' && \
