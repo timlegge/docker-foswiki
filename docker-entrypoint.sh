@@ -1,17 +1,7 @@
 #!/bin/bash
 
-echo "...preparing Solr for Foswiki"
-chown -R 8983:8983 /opt/solr/server/solr
-chown -R 8983:8983 /var/www/foswiki/solr
-
-cd /opt/solr/server/solr/configsets
-[ -L foswiki_configs ] && rm foswiki_configs
-ln -s /var/www/foswiki/solr/configsets/foswiki_configs/ .
-
-cd /opt/solr/server/solr/solr_foswiki
-[ -L core.properties ] && rm core.properties
-ln -s /var/www/foswiki/solr/cores/foswiki/core.properties
-
+echo "...pointing SolrPlugin at the solr container"
+# Solr 9 creates its own core from /var/www/foswiki/solr_9 (see the solr service in docker-compose)
 sed -i '/SolrPlugin..Url/s/localhost/solr/' /var/www/foswiki/lib/LocalSite.cfg
 
 echo "...enabling NatSkin"
