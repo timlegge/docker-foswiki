@@ -15,9 +15,6 @@ services:
     ports:
       - "$EXTERNAL_PORT:80"
     volumes:
-      - solr_logs:/opt/solr/server/logs:z
-      - solr_configsets:/opt/solr/server/solr/configsets:z
-      - solr_foswiki:/opt/solr/server/solr/solr_foswiki:z
       - foswiki_www:/var/www/foswiki:z
     labels:
       - "traefik.enable=true"
@@ -26,18 +23,22 @@ services:
       - "traefik.http.routers.${COMPOSE_PROJECT_NAME}.tls.certresolver=${ACME}"
 
   solr:
-    image: solr:5
+    # Solr 9 for SolrPlugin 10.x. On first start, solr-precreate creates the core from the
+    # plugin's Solr 9 configset, shipped in the image at /var/www/foswiki/solr_9.
+    image: solr:9-slim
     restart: always
+    command: solr-precreate foswiki /var/www/foswiki/solr_9/configsets/foswiki_configs
     networks:
       - backend
     volumes:
-      - solr_logs:/opt/solr/server/logs:z
-      - solr_configsets:/opt/solr/server/solr/configsets:z
-      - solr_foswiki:/opt/solr/server/solr/solr_foswiki:z
-      - foswiki_www:/var/www/foswiki:z
+      - solr_data:/var/solr:z
+      - foswiki_www:/var/www/foswiki:ro,z
+    ulimits:
+      nofile: 65000
     environment:
-      - GC_LOG_OPTS=''
-      - SOLR_LOG_LEVEL='WARN'
+      - SOLR_HEAP=512m
+      # make new and changed topics searchable within a few seconds
+      - SOLR_OPTS=-Dsolr.autoSoftCommit.maxTime=6000 -Dsolr.autoCommit.maxTime=15000
 
 volumes:
   foswiki_www:
@@ -46,23 +47,11 @@ volumes:
       type: none
       device: ${PWD}/volumes/foswiki_www/
       o: bind
-  solr_configsets:
+  solr_data:
     driver: local
     driver_opts:
       type: none
-      device: ${PWD}/volumes/solr_configsets
-      o: bind
-  solr_foswiki:
-    driver: local
-    driver_opts:
-      type: none
-      device: ${PWD}/volumes/solr_foswiki
-      o: bind
-  solr_logs:
-    driver: local
-    driver_opts:
-      type: none
-      device: ${PWD}/volumes/solr_logs
+      device: ${PWD}/volumes/solr_data
       o: bind
 
 networks:

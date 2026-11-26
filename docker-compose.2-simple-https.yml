@@ -14,33 +14,32 @@ services:
       - "8765:80"
       - "8443:443"
     volumes:
-      - solr_logs:/opt/solr/server/logs:z
-      - solr_configsets:/opt/solr/server/solr/configsets:z
-      - solr_foswiki:/opt/solr/server/solr/solr_foswiki:z
       - foswiki_www:/var/www/foswiki:z
       - ./https/nginx.default.conf:/etc/nginx/http.d/default.conf:z
       - ./https/docker-foswiki.crt:/etc/nginx/docker-foswiki.crt:z
       - ./https/docker-foswiki.key:/etc/nginx/docker-foswiki.key:z
 
   solr:
-    image: solr:5
+    # Solr 9 for SolrPlugin 10.x. On first start, solr-precreate creates the core from the
+    # plugin's Solr 9 configset, shipped in the image at /var/www/foswiki/solr_9.
+    image: solr:9-slim
     restart: always
+    command: solr-precreate foswiki /var/www/foswiki/solr_9/configsets/foswiki_configs
     networks:
       - backend
     volumes:
-      - solr_logs:/opt/solr/server/logs:z
-      - solr_configsets:/opt/solr/server/solr/configsets:z
-      - solr_foswiki:/opt/solr/server/solr/solr_foswiki:z
-      - foswiki_www:/var/www/foswiki:z
+      - solr_data:/var/solr:z
+      - foswiki_www:/var/www/foswiki:ro,z
+    ulimits:
+      nofile: 65000
     environment:
-      - GC_LOG_OPTS=''
-      - SOLR_LOG_LEVEL='WARN'
+      - SOLR_HEAP=512m
+      # make new and changed topics searchable within a few seconds
+      - SOLR_OPTS=-Dsolr.autoSoftCommit.maxTime=6000 -Dsolr.autoCommit.maxTime=15000
 
 volumes:
   foswiki_www:
-  solr_configsets:
-  solr_foswiki:
-  solr_logs:
+  solr_data:
 
 networks:
   frontend:

@@ -150,6 +150,31 @@ See: https://foswiki.org/Extensions/SolrPlugin#Using_Solr_for_WebSearch_44_WebCh
 
 The Docker container includes iwatch which automatically indexes files that have changed.  Everything is set up but you can review https://foswiki.org/Extensions/SolrPlugin#Realtime_indexing
 
+### Solr version and the initial index
+
+The compose files run **Solr 9** (`solr:9-slim`), which SolrPlugin 10.x requires. On its
+first start the solr container creates the `foswiki` core from the plugin's Solr 9
+configset, which is shipped in the image at `/var/www/foswiki/solr_9`. The core and its index
+live in the `solr_data` volume.
+
+iwatch only indexes topics as they change, so build the full index once after the first start:
+
+```bash
+docker compose exec foswiki sh -c 'cd /var/www/foswiki/tools && ./solrindex mode=full'
+```
+
+### Upgrading an existing installation from Solr 5
+
+Older compose files used `solr:5`. SolrPlugin 10.x doesn't work with it: every search fails
+with `undefined field: "source"`. To upgrade:
+
+1. Replace your `docker-compose.yml` with the updated variant (or copy its `solr` service and
+   `volumes` section). The `solr_configsets`, `solr_foswiki` and `solr_logs` volumes are no
+   longer used.
+2. Pull the new image and recreate both containers: `docker compose pull && docker compose up -d`
+3. Build the full index (command above).
+4. When search works, remove the old volumes with `docker volume rm`.
+
 ## Running multiple instances
 
 If multiple instances of Foswiki are needed, each one has to have its own folder, at same level as this repo :
@@ -204,7 +229,7 @@ After each instance starts, check the Traefik dashboard to verify it has been re
 ## Volumes
 
 See the volume declaration in the `docker-compose.yml` file :
-   * 4 volumes are created, for Foswiki data and Solr
+   * 2 volumes are created: `foswiki_www` for Foswiki and `solr_data` for the Solr core and index
    * the `:z` after the volume declaration is necessary with selinux on RedHat to set the permissions correctly
    * the volumes are located by default under `/var/lib/docker/volumes/` 
 
@@ -214,9 +239,7 @@ The third compose file is configured so that the actual volumes data is located 
 cd somepath/instance1
 mkdir volumes
 mkdir volumes/foswiki_www
-mkdir volumes/solr_configsets
-mkdir volumes/solr_foswiki
-mkdir volumes/solr_logs
+mkdir volumes/solr_data
 ```
 
 ## Image content
